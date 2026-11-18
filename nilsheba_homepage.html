@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#087f8c">
+  <title>নীলসেবা | NilSheba</title>
+  <style>
+    :root{--brand:#087f8c;--brand-dark:#075e68;--bg:#f3f8f9;--ink:#17343a;--muted:#668087;--line:#e1ecee;--white:#fff}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);font-family:system-ui,"Noto Sans Bengali",sans-serif;color:var(--ink)}
+    button,input{font:inherit}
+    .app{max-width:520px;margin:auto;min-height:100vh;background:var(--bg);padding-bottom:82px}
+    header{background:linear-gradient(135deg,var(--brand),#0aa5a1);color:white;padding:22px 18px 24px;border-radius:0 0 24px 24px}
+    .top{display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:10px}
+    .logo{width:43px;height:43px;border-radius:14px;background:#ffffff25;display:grid;place-items:center;font-size:24px}
+    .brand h1{font-size:21px;margin:0;line-height:1.2}
+    .brand small{font-size:11px;opacity:.9}
+    .bell{border:1px solid #ffffff55;background:#ffffff20;color:white;border-radius:12px;width:40px;height:40px;font-size:19px}
+    .welcome{margin:22px 0 12px;font-size:19px;font-weight:700}
+    .location{font-size:13px;opacity:.92}
+    .search{margin-top:17px;background:white;border-radius:14px;padding:0 13px;display:flex;align-items:center;gap:9px}
+    .search span{font-size:18px;color:var(--muted)}
+    .search input{width:100%;border:0;outline:0;padding:15px 0;color:var(--ink);background:transparent}
+    main{padding:18px}
+    .section-head{display:flex;align-items:center;justify-content:space-between;margin:4px 0 13px}
+    .section-head h2{font-size:17px;margin:0}
+    .section-head button{border:0;background:none;color:var(--brand);font-size:12px;font-weight:700}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+    .service{background:white;border:1px solid var(--line);border-radius:16px;padding:15px 7px 13px;text-align:center;cursor:pointer;min-height:104px;box-shadow:0 3px 10px #12343a08}
+    .service:active{transform:scale(.98)}
+    .ico{width:43px;height:43px;margin:0 auto 8px;border-radius:14px;background:#e8f6f5;display:grid;place-items:center;font-size:23px}
+    .service b{font-size:12px;font-weight:650}
+    .notice{margin-top:22px;background:white;border:1px solid var(--line);border-radius:16px;padding:15px}
+    .notice-row{display:flex;gap:11px;align-items:flex-start}
+    .notice-icon{background:#fff4df;border-radius:12px;padding:10px;font-size:20px}
+    .notice p{margin:3px 0 0;font-size:12px;color:var(--muted);line-height:1.5}
+    .notice strong{font-size:14px}
+    .districts{display:flex;gap:8px;overflow:auto;padding:2px 0 8px}
+    .districts button{white-space:nowrap;border:1px solid var(--line);background:white;color:var(--ink);padding:9px 13px;border-radius:20px;font-size:12px}
+    .districts button.active{background:var(--brand);color:white;border-color:var(--brand)}
+    .quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:17px}
+    .quick button{border:1px solid var(--line);background:white;border-radius:14px;padding:13px;text-align:left;color:var(--ink)}
+    .quick span{display:block;font-size:19px;margin-bottom:5px}
+    .quick b{font-size:12px}
+    .quick small{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+    .empty{display:none;background:white;border:1px solid var(--line);padding:18px;border-radius:14px;text-align:center;color:var(--muted);font-size:13px;margin-top:12px}
+    nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(520px,100%);display:flex;justify-content:space-around;background:#ffffffed;border-top:1px solid var(--line);padding:10px 4px max(10px,env(safe-area-inset-bottom));backdrop-filter:blur(12px)}
+    nav button{border:0;background:none;color:var(--muted);font-size:10px;display:grid;gap:3px;justify-items:center;min-width:58px}
+    nav button span{font-size:19px}
+    nav button.active{color:var(--brand);font-weight:700}
+    .toast{position:fixed;left:50%;bottom:85px;transform:translateX(-50%);background:#17343a;color:white;padding:11px 16px;border-radius:12px;font-size:12px;opacity:0;pointer-events:none;transition:.2s;max-width:90%;text-align:center}
+    .toast.show{opacity:1}
+    footer{text-align:center;color:#8aa0a5;font-size:10px;padding:20px 0 5px}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="top">
+      <div class="brand">
+        <div class="logo">নী</div>
+        <div><h1>নীলসেবা</h1><small>NILSHEBA · আপনার এলাকার সেবা</small></div>
+      </div>
+      <button class="bell" aria-label="বিজ্ঞপ্তি" onclick="notify('নতুন বিজ্ঞপ্তি এখনো যোগ করা হয়নি।')">♧</button>
+    </div>
+    <div class="welcome">আপনার প্রয়োজনীয় সেবা খুঁজুন</div>
+    <div class="location">📍 নীলফামারী জেলা, বাংলাদেশ</div>
+    <label class="search"><span>⌕</span><input id="searchInput" type="search" placeholder="কী সেবা খুঁজছেন? যেমন: ডাক্তার, মিস্ত্রি"></label>
+  </header>
+
+  <main>
+    <div class="section-head"><h2>জনপ্রিয় সেবাসমূহ</h2><button onclick="showAll()">সব দেখুন →</button></div>
+    <div class="grid" id="serviceGrid">
+      <button class="service" data-words="মিস্ত্রি ইলেকট্রিশিয়ান প্লাম্বার মেরামত"><div class="ico">🛠️</div><b>মিস্ত্রি ও মেরামত</b></button>
+      <button class="service" data-words="হাসপাতাল ডাক্তার ক্লিনিক স্বাস্থ্য"><div class="ico">🏥</div><b>হাসপাতাল ও স্বাস্থ্য</b></button>
+      <button class="service" data-words="অ্যাম্বুলেন্স জরুরি"><div class="ico">🚑</div><b>অ্যাম্বুলেন্স</b></button>
+      <button class="service" data-words="বাস ট্রেন পরিবহন যাতায়াত"><div class="ico">🚌</div><b>যাতায়াত</b></button>
+      <button class="service" data-words="চাকরি নিয়োগ কাজ"><div class="ico">💼</div><b>চাকরি</b></button>
+      <button class="service" data-words="কৃষি কৃষক সার বীজ"><div class="ico">🌾</div><b>কৃষি সেবা</b></button>
+      <button class="service" data-words="দোকান ব্যবসা বাজার"><div class="ico">🏪</div><b>দোকান ও ব্যবসা</b></button>
+      <button class="service" data-words="বাসা ভাড়া বাড়ি"><div class="ico">🏠</div><b>বাসা ভাড়া</b></button>
+      <button class="service" data-words="সরকারি অফিস ইউনিয়ন পরিষদ"><div class="ico">🏛️</div><b>সরকারি অফিস</b></button>
+    </div>
+    <div class="empty" id="emptyState">কোনো মিল পাওয়া যায়নি। অন্য শব্দ দিয়ে খুঁজুন।</div>
+
+    <section class="notice">
+      <div class="notice-row">
+        <div class="notice-icon">📢</div>
+        <div><strong>স্থানীয় বিজ্ঞপ্তি</strong><p>এখানে যাচাই করা চাকরি, জনসচেতনতা ও গুরুত্বপূর্ণ স্থানীয় ঘোষণা প্রকাশ করা হবে।</p></div>
+      </div>
+    </section>
+
+    <div class="section-head" style="margin-top:23px"><h2>উপজেলা নির্বাচন</h2></div>
+    <div class="districts" id="districts">
+      <button class="active">সব এলাকা</button><button>নীলফামারী সদর</button><button>সৈয়দপুর</button><button>ডোমার</button><button>ডিমলা</button><button>জলঢাকা</button><button>কিশোরগঞ্জ</button>
+    </div>
+
+    <div class="quick">
+      <button onclick="notify('সেবাদাতা নিবন্ধন সুবিধা পরবর্তী ধাপে যুক্ত হবে।')"><span>➕</span><b>আপনার সেবা যোগ করুন</b><small>ব্যবসা বা সেবার তথ্য জমা দিন</small></button>
+      <button onclick="notify('অভিযোগ ব্যবস্থা পরবর্তী ধাপে যুক্ত হবে।')"><span>🛡️</span><b>ভুল তথ্য রিপোর্ট</b><small>তথ্য যাচাইয়ে আমাদের সাহায্য করুন</small></button>
+    </div>
+    <footer>নীলসেবা · স্থানীয় তথ্য ব্যবহারের আগে যাচাই করুন</footer>
+  </main>
+
+  <nav>
+    <button class="active" onclick="navClick(this,'হোম')"><span>⌂</span>হোম</button>
+    <button onclick="navClick(this,'খুঁজুন')"><span>⌕</span>খুঁজুন</button>
+    <button onclick="navClick(this,'সেবা যোগ')"><span>⊕</span>সেবা যোগ</button>
+    <button onclick="navClick(this,'প্রোফাইল')"><span>♙</span>প্রোফাইল</button>
+  </nav>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const cards = [...document.querySelectorAll('.service')];
+  const emptyState = document.getElementById('emptyState');
+
+  function filterServices() {
+    const q = searchInput.value.trim().toLowerCase();
+    let visible = 0;
+    cards.forEach(card => {
+      const text = (card.innerText + ' ' + card.dataset.words).toLowerCase();
+      const match = text.includes(q);
+      card.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    emptyState.style.display = visible ? 'none' : 'block';
+  }
+  searchInput.addEventListener('input', filterServices);
+
+  function notify(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(window.toastTimer);
+    window.toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+  }
+  function showAll() {
+    searchInput.value = '';
+    filterServices();
+    notify('সব সেবা দেখানো হচ্ছে।');
+  }
+  cards.forEach(card => card.addEventListener('click', () => {
+    notify(card.querySelector('b').textContent + ' বিভাগটি পরবর্তী ধাপে চালু হবে।');
+  }));
+  document.querySelectorAll('#districts button').forEach(button => {
+    button.addEventListener('click', () => {
+      document.querySelectorAll('#districts button').forEach(b => b.classList.remove('active'));
+      button.classList.add('active');
+      notify(button.textContent + ' নির্বাচন করা হয়েছে।');
+    });
+  });
+  function navClick(button, name) {
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    button.classList.add('active');
+    notify(name + ' পৃষ্ঠা পরবর্তী ধাপে তৈরি হবে।');
+  }
+</script>
+</body>
+</html>
